@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import process from 'process';
 import axios from "axios";
 
 interface Project {
@@ -7,19 +6,20 @@ interface Project {
   name: string;
   description: string | null;
   html_url: string;
+  languages_url: string;
+  languages: string[];
 }
 
 const Projects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USER;
       const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-
-      console.log("Toutes les variables d'environnement :", process.env);
 
       try {
         const response = await axios.get<Project[]>(
@@ -30,7 +30,25 @@ const Projects: React.FC = () => {
             },
           }
         );
-        setProjects(response.data);
+
+        // Fetch languages for each project
+        const projectsWithLanguages = await Promise.all(
+          response.data.map(async (project) => {
+            try {
+              const languagesResponse = await axios.get(project.languages_url, {
+                headers: {
+                  Authorization: `token ${GITHUB_TOKEN}`,
+                },
+              });
+              const languages = Object.keys(languagesResponse.data); // Extract language names
+              return { ...project, languages };
+            } catch {
+              return { ...project, languages: [] }; // Default to empty if fetch fails
+            }
+          })
+        );
+
+        setProjects(projectsWithLanguages);
       } catch (err) {
         console.error("Erreur lors de la récupération des projets :", err);
         setError("Impossible de charger les projets.");
@@ -70,14 +88,24 @@ const Projects: React.FC = () => {
         {projects.map((project) => (
           <div
             key={project.id}
-            className="bg-gray-800 rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-200"
+            onMouseEnter={() => setSelectedProject(project.id)}
+            onMouseLeave={() => setSelectedProject(null)}
+            className={`relative bg-gray-800 rounded-lg shadow-lg p-6 transform transition-transform duration-200 hover:scale-105 cursor-pointer ${
+              selectedProject === project.id ? "glow-effect" : ""
+            }`}
           >
+            {/* Card content */}
             <h3 className="text-xl font-semibold mb-2 text-white">
               {project.name}
             </h3>
             <p className="text-gray-300 mb-4">
               {project.description || "Pas de description disponible."}
             </p>
+            {project.languages.length > 0 && (
+                <div className="text-gray-400 text-sm mb-4">
+                  <strong>Languages:</strong> {project.languages.join(", ")}
+                </div>
+              )}
             <a
               href={project.html_url}
               target="_blank"

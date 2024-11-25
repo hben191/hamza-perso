@@ -31,3 +31,25 @@ p {
   100% { background-position: 100% 0; }
 }
 
+.glow-effect {
+  box-shadow: 
+    0 0 16px 4px rgba(255, 102, 178, 0.3), /* Soft pink */
+    0 0 32px 10px rgba(102, 102, 255, 0.2), /* Cyan blue */
+    0 0 60px 20px rgba(178, 102, 255, 0.15); /* Mystical purple */
+  animation: glowBoreal 0.2s ease-in;
+}
+
+@keyframes glowBoreal {
+  0% {
+    box-shadow: 
+      0 0 12px 3px rgba(255, 102, 178, 0.15), 
+      0 0 24px 8px rgba(102, 102, 255, 0.1), 
+      0 0 48px 16px rgba(178, 102, 255, 0.05);
+  }
+  100% {
+    box-shadow: 
+      0 0 16px 4px rgba(255, 102, 178, 0.3), 
+      0 0 32px 10px rgba(102, 102, 255, 0.2), 
+      0 0 60px 20px rgba(178, 102, 255, 0.15);
+  }
+}
