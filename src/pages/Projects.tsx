@@ -90,9 +90,11 @@ const Projects: React.FC = () => {
             key={project.id}
             onMouseEnter={() => setSelectedProject(project.id)}
             onMouseLeave={() => setSelectedProject(null)}
-            className={`relative bg-gray-800 rounded-lg shadow-lg p-6 transform transition-transform duration-200 hover:scale-105 cursor-pointer ${
-              selectedProject === project.id ? "glow-effect" : ""
-            }`}
+            className={`relative bg-gray-800 rounded-lg shadow-lg p-6 
+              transform transition-transform duration-200 
+              hover:scale-105 cursor-pointer ${
+                selectedProject === project.id ? "glow-effect" : ""
+              }`}
           >
             {/* Card content */}
             <h3 className="text-xl font-semibold mb-2 text-white">

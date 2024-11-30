@@ -26,9 +26,19 @@ function MainContent() {
           avec PHP et Symfony.
         </p>
         <Link to="/projects"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-indigo-600 to-green-400 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-green-500 transition duration-300"
+          className="relative group mt-4 inline-block text-white font-semibold py-2 px-4 rounded overflow-hidden"
         >
-          Voir mes projets
+          <span className="absolute 
+                      inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+                      transform scale-110 opacity-0 transition duration-500 
+                      group-hover:opacity-100 group-hover:scale-100"></span>
+          <span className="relative z-10">Voir mes projets</span>
+        </Link>
+        <Link to="/about"
+          className="relative group mt-4 inline-block text-white font-semibold py-2 px-4 rounded overflow-hidden"
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transform scale-110 opacity-0 transition duration-500 group-hover:opacity-100 group-hover:scale-100"></span>
+          <span className="relative z-10">À propos de moi</span>
         </Link>
       </div>
 
